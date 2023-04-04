@@ -1,0 +1,38 @@
+name: Complete Code with OpenAI LLM
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  complete_code:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Install dependencies
+      run: pip install omegaconf openai
+
+    - name: Run complete_code.py
+      run: python complete_code.py
+
+    - name: Commit and push changes
+      run: |
+        git config --global user.name "Your Name"
+        git config --global user.email "you@example.com"
+        git checkout -b ${{ env.BRANCH_NAME }}
+        git add .
+        git commit -m "${{ env.COMMIT_MESSAGE }}"
+        git push -u origin ${{ env.BRANCH_NAME }}
+
+    env:
+      BRANCH_NAME: ${{ fromJson(steps.complete_code.outputs.config).branch_name }}
+      COMMIT_MESSAGE: ${{ fromJson(steps.complete_code.outputs.config).commit_message }}
