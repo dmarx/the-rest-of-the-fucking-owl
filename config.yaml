@@ -1,0 +1,30 @@
+# Config file for complete_code.py
+
+# OpenAI API key
+api_key: YOUR_OPENAI_API_KEY
+
+# Input file containing the code prompts
+input_file: prompts.txt
+
+# Output directory to store completed code files
+output_dir: output
+
+# File extension for completed code files
+output_file_extension: .py
+
+# GitHub repository name
+repo_name: myrepo
+
+# Branch name for creating a new branch and pushing changes
+branch_name: complete-code
+
+# Commit message for the new commit
+commit_message: "Completed code using OpenAI LLM"
+
+# Maximum number of tokens allowed in API call
+max_tokens: 1024
+
+# Completion options for OpenAI API
+completion_options:
+  temperature: 0.8
+  max_tokens: 100
