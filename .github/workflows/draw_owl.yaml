@@ -7,8 +7,8 @@ on:
       - main
 
 env:
-  BRANCH_NAME: "llmautocomplete"
-  COMMIT_MESSAGE: "autocompleted"
+  BRANCH_NAME: "llm_autocomplete-$GITHUB_RUN_NUMBER"
+  COMMIT_MESSAGE: Auto completed.
   TRIGGER_WORD: 4LLM
   # TO DO: scope this better
   OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -52,7 +52,13 @@ jobs:
           echo "Commit message does not contain trigger word. Skipping job."
           exit 0
         fi
-
+        
+    - name: Create branch and/or rebase
+      run: |
+        git config --global user.name "llm autocomplete"
+        git config --global user.email "llm@fakemail.com"
+        git checkout -b $BRANCH_NAME
+        
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
@@ -63,12 +69,9 @@ jobs:
       
     - name: Run draw_owl.py
       run: python draw_owl.py
-        
-    - name: Create branch and commit
-      run: |
-        git config --global user.name "llm autocomplete"
-        git config --global user.email "llm@fakemail.com"
-        git checkout -b $BRANCH_NAME
+
+    - name: commit new work
+      run: |  
         git add .
-        git commit -m $COMMIT_MESSAGE
+        git commit -m "$COMMIT_MESSAGE"
         git push origin $BRANCH_NAME
