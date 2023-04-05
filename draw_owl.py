@@ -46,7 +46,6 @@ def generate_code_completion(
 
 def process_file(
     file_path: str,
-    prompt_extension: str, 
     target_extension: str,
     completion_kargs: dict,
 ) -> None:
@@ -58,9 +57,7 @@ def process_file(
     """
     print(file_path)
     with open(file_path, "r") as file:
-        #prompts = file.read().split("\n")
         prompt = file.read()
-    #for prompt in prompts:
     if not prompt:
         return
     completed_code = generate_code_completion(prompt, **completion_kargs)
@@ -75,10 +72,9 @@ if __name__ == "__main__":
     config = OmegaConf.load(CONFIG_FILE)
 
     for file_name in os.listdir():
-        if file_name.endswith(prompt_extension):
+        if file_name.endswith(config.prompt_extension):
             process_file(
                 file_name, 
-                prompt_extension=config.prompt_extension, 
                 target_extension=config.target_extension,
                 completion_kargs=OmegaConf.to_container(config.completion_options),
             )
