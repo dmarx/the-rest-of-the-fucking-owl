@@ -7,9 +7,9 @@
 
 ### Trigger an LLM in your CI/CD to auto-complete your work
 
-1. Write file(s) with incomplete content, using ext `.llm_prompt`
-2. Conclude commit message with "4LLM"
-3. LLM completes your work and pushes it to a PR for review!
+1. Write files with incomplete content. Save them with the extension `.llm_prompt`.
+2. Conclude the commit message with the trigger word: "4LLM"
+3. Your LLM of choice completes your work and pushes it to a PR for review!
 
 
 # Setup
