@@ -1,6 +1,7 @@
 import os
 import openai
 from omegaconf import OmegaConf
+from pathlib import Path
 
 CONFIG_FILE="config.yaml"
 
@@ -66,6 +67,7 @@ def process_file(
     print(target_file)
     with open(target_file, "w") as f:
         f.write(completed_code + "\n")
+    Path(file_path).unlink()
 
 
 if __name__ == "__main__":
