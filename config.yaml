@@ -6,13 +6,11 @@ prompt_extension: .llm_prompt
 # the default extension files will be written to
 target_extension: .py
 
+# Maximum number of tokens allowed in API call
 # this is in here twice and I think also hardcoded...
 max_tokens: 1024
 
 model_name: gpt-3.5-turbo
-
-# Maximum number of tokens allowed in API call
-max_tokens: 1024
 
 # Completion options for OpenAI API
 completion_options:
