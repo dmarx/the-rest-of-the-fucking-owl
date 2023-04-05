@@ -22,7 +22,10 @@ DEFAULT_USER_TEMPLATE = (
     "your response should be only the raw text content of the completed document (i.e. please do not add markdown code formatting). "
 )
 
-def generate_code_completion(prompt: str, model_name: str) -> str:
+def generate_code_completion(
+    prompt: str,
+    **kargs
+) -> str:
     """
     Generate code completion using OpenAI's Codex model.
 
@@ -34,22 +37,18 @@ def generate_code_completion(prompt: str, model_name: str) -> str:
     """
 
     completions = openai.ChatCompletion.create(
-        model=model_name,
-        #prompt=prompt,
-        max_tokens=2048,
         messages=[
             {"role": "system", "content": DEFAULT_SYSTEM_PROMPT},
             {"role": "user", "content": DEFAULT_USER_TEMPLATE.format(text=prompt)},
-        ],
-    )
+        ], **kargs)
     return completions.choices[0]['message']['content'].strip()
 
 
 def process_file(
     file_path: str,
-    model_name: str, 
     prompt_extension: str, 
     target_extension: str,
+    completion_kargs: dict,
 ) -> None:
     """
     Process a file by generating code completion for the prompts in the file.
@@ -64,7 +63,7 @@ def process_file(
     #for prompt in prompts:
     if not prompt:
         return
-    completed_code = generate_code_completion(prompt, model_name)
+    completed_code = generate_code_completion(prompt, **completion_kargs)
     print(completed_code)
     target_file = os.path.splitext(file_path)[0] + target_extension
     print(target_file)
@@ -73,15 +72,13 @@ def process_file(
 
 
 if __name__ == "__main__":
-    # Read config file
     config = OmegaConf.load(CONFIG_FILE)
 
-    # Extract variables from config
-    model_name = config.model_name
-    prompt_extension = config.prompt_extension
-    target_extension = config.target_extension
-
-    # Process each file with prompt extension
     for file_name in os.listdir():
         if file_name.endswith(prompt_extension):
-            process_file(file_name, model_name, prompt_extension, target_extension)
+            process_file(
+                file_name, 
+                prompt_extension=config.prompt_extension, 
+                target_extension=config.target_extension,
+                completion_kargs=OmegaConf.to_container(config.completion_options),
+            )
