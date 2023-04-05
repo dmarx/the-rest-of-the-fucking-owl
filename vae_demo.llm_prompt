@@ -1,0 +1,7 @@
+"""
+the following file implements a simple variational auto-encoder in pytorch.
+the architecture is parameterized by a hydra config file.
+the training boilerplate uses pytorch-lightning and deepspeed for distributed training.
+"""
+
+import torch
