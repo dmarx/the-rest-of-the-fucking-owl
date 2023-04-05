@@ -1,4 +1,4 @@
-# 🚧 the-rest-of-the-fucking-owl 🚧
+# the-rest-of-the-fucking-owl
 
 🚧 **WORK IN PROGRESS** It mostly works, but no promises for quality or stability. I'll remove this disclaimer when I'm a bit happier with it.
 
