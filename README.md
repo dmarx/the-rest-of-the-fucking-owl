@@ -35,3 +35,4 @@ Click on the "Actions" tab: if you see a green check mark, that means the workfl
 # Related Projects
 
 * https://github.com/irgolic/AutoPR
+* https://github.com/biobootloader/wolverine
