@@ -11,13 +11,27 @@ model_name = config.model_name
 prompt_extension = config.prompt_extension
 target_extension = config.target_extension
 commit_message_tag = config.commit_message_tag
-commit_message_prefix = config.commit_message_prefix
-repo_name = config.repo_name
+#commit_message_prefix = config.commit_message_prefix
+#repo_name = config.repo_name
 branch_name = config.branch_name
 
 # Set up OpenAI API
-openai.api_key = config.api_key
+#openai.api_key = config.api_key
 
+DEFAULT_SYSTEM_PROMPT = (
+    "You are an experienced staff software engineer who writes perfect code. "
+    "Your code is concise, self-explanatory, modular, scalable, and generally demonstrates best practices. "
+    "You prefer python. Your python code is always fully type hinted and has docstrings formatted for generating documentation. "
+    "Your projects include full test coverage. Pytest is your prefferred testing framework. "
+    "You use github actions for ci/cd automation. "
+)
+DEFAULT_USER_TEMPLATE = (
+    "you are presented with the following incomplete document. "
+    "<document>\n{text}\n</document>\n"
+    "respond with the completed document. "
+    "do not acknowledge me or my inquiry. "
+    "respond only with perfect, working code and/or documentation. "
+)
 
 def generate_code_completion(prompt: str) -> str:
     """
@@ -29,12 +43,17 @@ def generate_code_completion(prompt: str) -> str:
     Returns:
         str: The generated code completion.
     """
-    completions = openai.Completion.create(
-        engine=model_name,
-        prompt=prompt,
+
+    completions = openai.ChatCompletion.create(
+        model=model_name,
+        #prompt=prompt,
         max_tokens=2048,
+        messages=[
+            {"role": "system", "content": DEFAULT_SYSTEM_PROMPT},
+            {"role": "user", "content": DEFAULT_USER_TEMPLATE.format(text=prompt)},
+        ],
     )
-    return completions.choices[0].text.strip()
+    return completions.choices[0]['message']['content'].strip()
 
 
 def process_file(file_path: str) -> None:
@@ -64,8 +83,8 @@ if __name__ == "__main__":
     prompt_extension = config.prompt_extension
     target_extension = config.target_extension
     commit_message_tag = config.commit_message_tag
-    commit_message_prefix = config.commit_message_prefix
-    repo_name = config.repo_name
+    #commit_message_prefix = config.commit_message_prefix
+    #repo_name = config.repo_name
     branch_name = config.branch_name
 
     # Process each file with prompt extension
@@ -74,9 +93,9 @@ if __name__ == "__main__":
             process_file(file_name)
 
     # Commit and push changes
-    os.system("git checkout -b {}_{}".format(commit_message_prefix, branch_name))
+    os.system(f"git checkout -b {config.branch_name}")
     os.system("git add .")
-    os.system("git commit -m '{}: Add completed code'".format(commit_message_tag))
-    os.system("git push -u origin {}_{}".format(commit_message_prefix, branch_name))
+    os.system("git commit -m 'LLM autocompletion'")
+    os.system(f"git push -u origin {config.branch_name}")
 
-    print("Code completion completed and changes pushed to branch {}_{}".format(commit_message_prefix, branch_name))
+    print(f"Code completion completed and changes pushed to branch {config.branch_name}")
