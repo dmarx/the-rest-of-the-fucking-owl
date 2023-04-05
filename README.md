@@ -36,3 +36,8 @@ Click on the "Actions" tab: if you see a green check mark, that means the workfl
 
 * https://github.com/irgolic/AutoPR
 * https://github.com/biobootloader/wolverine
+* https://github.com/Quansight/pseudocode
+ 
+## Sorta related
+
+* https://github.com/PrefectHQ/marvin
