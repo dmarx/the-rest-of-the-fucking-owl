@@ -1,12 +1,16 @@
 # the-rest-of-the-fucking-owl
 
-🚧 **WORK IN PROGRESS** It mostly works, but no promises for quality or stability. I'll remove this disclaimer when I'm a bit happier with it.
+🚧 **WORK IN PROGRESS** 🚧
 
 ![](https://i.imgur.com/RadSf.jpg)
 
-trigger an LLM in your CI/CD to auto-complete your work
 
-idea fleshed out here: https://github.com/dmarx/bench-warmers/blob/main/auto-coder.md
+### Trigger an LLM in your CI/CD to auto-complete your work
+
+1. Write file(s) with incomplete content, using ext `.llm_prompt`
+2. Conclude commit message with "4LLM"
+3. LLM completes your work and pushes it to a PR for review!
+
 
 # Setup
 
