@@ -12,6 +12,10 @@ working on it here: https://github.com/dmarx/owl-test/
 
 1. Create a new github repository, using this as a [template](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template).
 2. Configure your `OPENAI_API_KEY` as a secret on the repository: https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository
+3. Make sure `Settings > Actions > General` is configured thusly:
+  - Actions permissions: Allow all actions and reusable workflows
+  - Workflow permissions: Read and write permissions
+  - Workflow permissions: Allow Github Actions to create and approve pull requests 
 
 # Use
 
