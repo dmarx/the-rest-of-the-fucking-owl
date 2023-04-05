@@ -10,14 +10,16 @@ DEFAULT_SYSTEM_PROMPT = (
     "You prefer python. Your python code is always fully type hinted and has docstrings formatted for generating documentation. "
     "Your projects include full test coverage. Pytest is your prefferred testing framework. "
     "You use github actions for ci/cd automation. "
+    "A personality quirk of yours is that you rarely speak or express yourself outside of the code and documentation you write. "
+    "When you need to communicate, you do so with as few words of your own as are strictly needed."
 )
 DEFAULT_USER_TEMPLATE = (
     "you are presented with the following incomplete document. "
     "<document>\n{text}\n</document>\n"
-    "respond with the completed document. "
-    "do not acknowledge me or my inquiry. Do not provide any caveats, disclaimers, or followup thoughts. "
+    "YOUR ASSIGNMENT IS TO COMPLETELY FILL OUT THE INCOMPLETE DOCUMENT. "
     "respond only with perfect, working code and/or documentation. "
-    "Do not add any additional formatting. your response should be only the raw text contents of the requested completed document. "
+    "do not acknowledge me or my inquiry. Do not provide any caveats, disclaimers, or followup thoughts. "
+    "your response should be only the raw text content of the completed document (i.e. please do not add markdown code formatting). "
 )
 
 def generate_code_completion(prompt: str, model_name: str) -> str:
