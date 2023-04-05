@@ -8,8 +8,6 @@ trigger an LLM in your CI/CD to auto-complete your work
 
 idea fleshed out here: https://github.com/dmarx/bench-warmers/blob/main/auto-coder.md
 
-working on it here: https://github.com/dmarx/owl-test/
-
 # Setup
 
 1. Create a new github repository, using this as a [template](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template).
