@@ -1,17 +1,54 @@
-name: Complete Code with OpenAI LLM
+name: Draw Owl
 
 on:
   push:
     branches:
       - main
 
+env:
+  BRANCH_NAME: "llmautocomplete"
+  COMMIT_MESSAGE: "autocompleted"
+  TRIGGER_WORD: 4LLM
+
+# https://github.com/actions/runner/issues/662
 jobs:
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      status: ${{ steps.early.outputs.status }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - id: early
+        name: Branch check
+        # https://stackoverflow.com/questions/229551/how-to-check-if-a-string-contains-a-substring-in-bash
+        run: |
+          status="skip"
+          if [[ "${{ github.event.head_commit.message }}" == *$TRIGGER_WORD ]]
+          then
+            status="execute"
+          fi
+          echo $status
+
+          echo "status=$status" >> $GITHUB_OUTPUT
+
+
+
   complete_code:
     runs-on: ubuntu-latest
+    needs: check
+    if: needs.check.outputs.status == 'execute'
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+
+    - name: Check commit message
+      run: |
+        if [[ ! "${{ github.event.head_commit.message }}" =~ $TRIGGER_WORD ]]; then
+          echo "Commit message does not contain trigger word. Skipping job."
+          exit 0
+        fi
 
     - name: Set up Python
       uses: actions/setup-python@v2
@@ -19,20 +56,14 @@ jobs:
         python-version: 3.8
 
     - name: Install dependencies
-      run: pip install omegaconf openai
-
-    - name: Run complete_code.py
-      run: python complete_code.py
-
-    - name: Commit and push changes
+      run: pip install -r requirements.txt
+      
+    - name: Run draw_owl.py
+      run: python draw_owl.py
+        
+    - name: Create branch and commit
       run: |
-        git config --global user.name "Your Name"
-        git config --global user.email "you@example.com"
-        git checkout -b ${{ env.BRANCH_NAME }}
+        git checkout -b $BRANCH_NAME
         git add .
-        git commit -m "${{ env.COMMIT_MESSAGE }}"
-        git push -u origin ${{ env.BRANCH_NAME }}
-
-    env:
-      BRANCH_NAME: ${{ fromJson(steps.complete_code.outputs.config).branch_name }}
-      COMMIT_MESSAGE: ${{ fromJson(steps.complete_code.outputs.config).commit_message }}
+        git commit -m $COMMIT_MESSAGE
+        git push origin $BRANCH_NAME
